@@ -1,23 +1,19 @@
-import io from "socket.io-client";
 import { useEffect, useState } from "react";
-//import { useQuery } from 'react-query';
 import axios from "../api/axios.js";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { asyncFunction } from "../services/codeBlocksIns.js"; //importing the initial codeBlock
+import { JSONWork } from "../services/codeBlocksIns.js"; //importing the initial codeBlock
 import "../styles/CodeBlock.css";
+import socket from "../api/socket.js";
 
-const title = asyncFunction.title;
+
+const title = JSONWork.title;
 console.log(title);
 const SEND_CODE_URL = "/api/codeBlock";
 const SET_UP_URL = `/api/SetComponentUp/${title}`;
 
-const socket = io.connect("http://localhost:8080");
-
-// Returns a highlighted HTML string
-
-const CodeBlock = (props) => {
-  const [code, setCode] = useState(asyncFunction.code);
+const JSONCode = () => {
+  const [code, setCode] = useState(JSONWork.code);
   const [isMentor, setIsMentor] = useState(false);
   const [message, setMessage] = useState("");
   const [isCodeCorrect, setIsCodeCorrect] = useState(false);
@@ -34,7 +30,7 @@ const CodeBlock = (props) => {
     return text.replace(/^\s+|\s+$/gm, "");
   };
 
-  const solution = removeIndentation(asyncFunction.solution);
+  const solution = removeIndentation(JSONWork.solution);
 
   // handles the submit event
   const handleClick = async (e) => {
@@ -100,11 +96,6 @@ const CodeBlock = (props) => {
     socket.on("received_data", (newCode) => {
       setCode(newCode);
     });
-
-    // Clean up WebSocket connection
-    return () => {
-      socket.disconnect();
-    };
   }, [socket]);
 
   return (
@@ -137,4 +128,4 @@ const CodeBlock = (props) => {
     </section>
   );
 };
-export default CodeBlock;
+export default JSONCode;

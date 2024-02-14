@@ -33,7 +33,6 @@ export const asyncFunction = new CodeBlock(
     fetchData();`,
     `async function fetchData() {
         async function fetchFromAPI() {
-            // Simulate fetching data from an API
             await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate a delay of 2 seconds
             return { exampleData: "This is some fetched data" }; // Simulated fetched data
         }
@@ -50,7 +49,7 @@ export const asyncFunction = new CodeBlock(
 )
 
 
-export const JSONData = new CodeBlock(
+export const JSONWork = new CodeBlock(
     "Working with JSON Data",
     `// Create a function called parseJSON that takes a JSON string as input and parses it into a JavaScript object.
     // Call the function with the provided JSON string.
