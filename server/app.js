@@ -3,15 +3,21 @@ const app = express();
 import cors from 'cors';
 import { createServer } from "http";
 import { Server } from "socket.io"
+import router from './routes/route.js';
+import mongoose from 'mongoose';
+
+
 
 const httpServer = createServer(app)
 const PORT = process.env.PORT || 8080;
 const MODE = process.env.MODE_ENV;
+const URI_MONGO = process.env.MONGODB_URI_LOCAL || "mongodb://127.0.0.1:27017/codingWebApp";
+
 
 app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// Keep track of users in each code block
-let firstConnection = true;
 
 const io = new Server(httpServer, {
     cors: {
@@ -22,31 +28,22 @@ const io = new Server(httpServer, {
 // Socket.IO server
 io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
-    console.log(firstConnection)
-
-    socket.on("code_submit", data => {
-        console.log(data);
-    })
 
     socket.on('code_change', data => {
         socket.broadcast.emit("received_data", data)
     })
-})
-
-// Express.js HTTP routes
-app.get("/api/isMentorStatus", (req, res) => {
-    console.log("hi")
-    if(firstConnection){
-        firstConnection = false;
-        res.json(true);
-    }
-    else{
-        res.json(false);
-    }
-})
-
-app.get("/api/codeBlock/:id", (req, res) => {
     
+    // Handle disconnect event
+    socket.on('disconnect', () => {
+        console.log('User disconnected:', socket.id);
+    });
 })
 
-httpServer.listen(PORT, () => console.log('server is running'))
+//express server
+app.use('/api', router);
+
+const connection = async () => {
+    await mongoose.connect(URI_MONGO);
+    httpServer.listen(PORT, () => console.log('server is running'))
+  }
+connection().catch(err => console.log(err.message));

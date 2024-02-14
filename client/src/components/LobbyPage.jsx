@@ -1,9 +1,6 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+
+import "../styles/LobbyPage.css";
 
 const LobbyPage = () => {
   const codeBlocks = [
@@ -14,10 +11,10 @@ const LobbyPage = () => {
   ];
   return (
     <section>
-      <h1>Choose code block</h1>
-      <ul>
+      <h1 className='lobby-page-title'>Choose code block</h1>
+      <ul className='list-container'>
         {codeBlocks.map((block) => (
-          <li key={block.id}>
+          <li key={block.id} className='list-item'>
             <Link to={`/codeblock`}>{block.title}</Link>
           </li>
         ))}
