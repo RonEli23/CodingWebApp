@@ -5,6 +5,8 @@ import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { JSONWork } from "../services/codeBlocksIns.js"; //importing the initial codeBlock
 import "../styles/CodeBlock.css";
 import socket from "../api/socket.js";
+import Cookies from "js-cookie";
+
 
 
 const title = JSONWork.title;
@@ -83,6 +85,7 @@ const JSONCode = () => {
       .get(SET_UP_URL, {
         params: {
           title: title,
+          uniqueKey: Cookies.get("uniqueKey"),
         },
       })
       .then((res) => {
@@ -100,6 +103,7 @@ const JSONCode = () => {
     socket.on("received_data", (newCode) => {
       setCode(newCode);
     });
+
   }, [socket]);
 
   return (

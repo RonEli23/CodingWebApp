@@ -14,6 +14,10 @@ const PORT = process.env.PORT || 8080;
 const NODE = process.env.NODE_ENV;
 const URI_MONGO = process.env.MONGODB_URI;
 
+// app.use(cors({
+//     origin: 'http://localhost:3000',
+//     credentials: true
+// }));
 
 app.use(cors({
     origin: 'https://codingwebapp.onrender.com'
@@ -34,7 +38,6 @@ const io = new Server(httpServer, {
 io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
     
-
     socket.on('code_change', data => {
         socket.broadcast.emit("received_data", data)
     })

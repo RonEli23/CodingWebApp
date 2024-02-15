@@ -41,11 +41,8 @@ export const handleSubmitCode = async (req, res) => {
 };
 
 export const handleSetComponentUp = async (req, res) => {
-  const clientKey = req.cookies['uniqueKey']; // Retrieve client IP address
-  console.log(clientKey);
-  const { title } = req?.query;
+  const { title ,uniqueKey} = req?.query;
   let isMentor = false;
-  console.log(title);
   if (!title) return res.status(400).send({error:"block title is empty"});
 
   // Find the code block with the given title
@@ -54,18 +51,18 @@ export const handleSetComponentUp = async (req, res) => {
   
   // If the code block is found, update its isMentor value
   if (!codeBlock?.mentor) {
-    codeBlock.mentor = clientKey;
+    codeBlock.mentor = uniqueKey;
     isMentor = true;
   }
   else{
-    if(codeBlock?.mentor === clientKey){
+    if(codeBlock?.mentor === uniqueKey){
       isMentor = true;
     }
   }
 
-  console.log(isMentor);
+  // console.log(isMentor);
 
-  console.log(codeBlocks);
+  // console.log(codeBlocks);
   try {
     //mongo
     const query = newCode_model.find({ title: title });

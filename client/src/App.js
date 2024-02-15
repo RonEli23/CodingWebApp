@@ -7,7 +7,6 @@ import BasicFunctionCode from './components/BasicFuncCode';
 import JSONCode from './components/JSONCode';
 import NoPage from './components/NoPage';
 import { useEffect } from 'react';
-import socket from "./api/socket.js";
 import Cookies from 'js-cookie';
 import { v4 as uuidv4 } from 'uuid'; // Import uuid package for generating unique keys
 
@@ -22,10 +21,6 @@ function App() {
       Cookies.set("uniqueKey", JSON.stringify(newUniqueKey));
     }
     
-    //triggered when user exit app
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   return (

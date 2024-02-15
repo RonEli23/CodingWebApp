@@ -5,6 +5,8 @@ import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { asyncFunction } from "../services/codeBlocksIns.js"; //importing the initial codeBlock
 import "../styles/CodeBlock.css";
 import socket from "../api/socket.js";
+import Cookies from "js-cookie";
+
 
 const title = asyncFunction.title;
 const SEND_CODE_URL = "/api/codeBlock";
@@ -82,6 +84,7 @@ const CodeBlock = () => {
       .get(SET_UP_URL, {
         params: {
           title: title,
+          uniqueKey: Cookies.get("uniqueKey"),
         },
       })
       .then((res) => {
@@ -99,6 +102,7 @@ const CodeBlock = () => {
     socket.on("received_data", (newCode) => {
       setCode(newCode);
     });
+
   }, [socket]);
 
   return (

@@ -5,7 +5,7 @@ import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { arrayManipulation } from "../services/codeBlocksIns.js"; //importing the initial codeBlock
 import "../styles/CodeBlock.css";
 import socket from "../api/socket.js";
-
+import Cookies from "js-cookie";
 
 const title = arrayManipulation.title;
 const SEND_CODE_URL = "/api/codeBlock";
@@ -59,7 +59,7 @@ const ArrayManipulationCode = () => {
 
   // if user has changed the code, make sure he saved the changes before exiting
   useEffect(() => {
-    if(!hasChanged) return;
+    if (!hasChanged) return;
 
     const handleBeforeUnload = (event) => {
       const userRes = window.confirm("Have you saved your changes?");
@@ -69,13 +69,15 @@ const ArrayManipulationCode = () => {
       }
     };
 
-    window.addEventListener("beforeunload", handleBeforeUnload, {capture: true});
+    window.addEventListener("beforeunload", handleBeforeUnload, {
+      capture: true,
+    });
 
     //triggered when user exit component
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [hasChanged])
+  }, [hasChanged]);
 
   useEffect(() => {
     //setting up component data from server
@@ -83,6 +85,7 @@ const ArrayManipulationCode = () => {
       .get(SET_UP_URL, {
         params: {
           title: title,
+          uniqueKey: Cookies.get("uniqueKey"),
         },
       })
       .then((res) => {
@@ -99,6 +102,7 @@ const ArrayManipulationCode = () => {
     socket.on("received_data", (newCode) => {
       setCode(newCode);
     });
+ 
   }, [socket]);
 
   return (
@@ -118,7 +122,9 @@ const ArrayManipulationCode = () => {
       >
         {code}
       </SyntaxHighlighter>
-      <button onClick={handleClick} disabled={isMentor}>save changes</button>
+      <button onClick={handleClick} disabled={isMentor}>
+        save changes
+      </button>
       {isCodeCorrect && showBackdrop ? (
         <div>
           <div className="backdrop" onClick={handleBackdropClick} />

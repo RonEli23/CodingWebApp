@@ -5,6 +5,8 @@ import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { basicFunction } from "../services/codeBlocksIns.js"; //importing the initial codeBlock
 import "../styles/CodeBlock.css";
 import socket from "../api/socket.js";
+import Cookies from "js-cookie";
+
 
 
 const title = basicFunction.title;
@@ -84,6 +86,7 @@ const BasicFunctionCode = () => {
       .get(SET_UP_URL, {
         params: {
           title: title,
+          uniqueKey: Cookies.get("uniqueKey"),
         },
       })
       .then((res) => {
@@ -101,6 +104,7 @@ const BasicFunctionCode = () => {
     socket.on("received_data", (newCode) => {
       setCode(newCode);
     });
+
   }, [socket]);
 
   return (
