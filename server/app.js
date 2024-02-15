@@ -30,9 +30,7 @@ const io = new Server(httpServer, {
 // Socket.IO server
 io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
-    // Send the socket ID to the client
-    socket.emit('socketId', socket.id);
-
+    
 
     socket.on('code_change', data => {
         socket.broadcast.emit("received_data", data)
