@@ -120,7 +120,7 @@ const BasicFunctionCode = () => {
       >
         {code}
       </SyntaxHighlighter>
-      <button onClick={handleClick}>save changes</button>
+      <button onClick={handleClick} disabled={isMentor}>save changes</button>
       {isCodeCorrect && showBackdrop ? (
         <div>
           <div className="backdrop" onClick={handleBackdropClick} />
