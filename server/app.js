@@ -5,12 +5,13 @@ import { createServer } from "http";
 import { Server } from "socket.io"
 import router from './routes/route.js';
 import mongoose from 'mongoose';
+import { } from 'dotenv/config';
 
 
 const httpServer = createServer(app)
 const PORT = process.env.PORT || 8080;
 const NODE = process.env.NODE_ENV;
-const URI_MONGO = process.env.MONGODB_URI || "mongodb+srv://Ron_Eli23:XVyP8DVRjvaE03WE@cluster0.dgujynr.mongodb.net/?retryWrites=true&w=majority";
+const URI_MONGO = process.env.MONGODB_URI;
 
 
 app.use(cors())
