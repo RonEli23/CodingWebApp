@@ -20,7 +20,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
+console.log(NODE)
 const io = new Server(httpServer, {
     cors: {
         origin: NODE === "production" ? false : ["http://localhost:3000", "http://127.0.0.1:3000"]
