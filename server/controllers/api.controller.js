@@ -42,7 +42,7 @@ export const handleSubmitCode = async (req, res) => {
 
 export const handleSetComponentUp = async (req, res) => {
   const clientIpAddress = req.get('X-Forwarded-For') || req.ip;; // Retrieve client IP address
-  console.log(req.socket.remoteAddress);
+  console.log(req.header('x-forwarded-for'));
   const clientIP = clientIpAddress.split(',')[0].trim(); // Extract the leftmost IP address
   const { title } = req?.query;
   let isMentor = false;
