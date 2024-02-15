@@ -63,6 +63,8 @@ export const handleSetComponentUp = async (req, res) => {
     }
   }
 
+  console.log(isMentor);
+
   console.log(codeBlocks);
   try {
     //mongo
