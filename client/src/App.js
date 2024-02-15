@@ -17,7 +17,9 @@ function App() {
   useEffect(() => {
 
     if(!Cookies.get("uniqueKey")){
-      Cookies.set("uniqueKey", JSON.stringify(uuidv4()));
+      const newUniqueKey = uuidv4();
+      console.log("Generated unique key:", newUniqueKey);
+      Cookies.set("uniqueKey", JSON.stringify(newUniqueKey));
     }
     
     //triggered when user exit app
