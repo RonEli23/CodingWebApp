@@ -44,24 +44,6 @@ export const handleSetComponentUp = async (req, res) => {
   const { title ,uniqueKey} = req?.query;
   let isMentor = false;
 
-  // // Find the code block with the given title
-  // const codeBlock = codeBlocks.find((block) => block.title === title);
-  // if (!codeBlock) return res.status(400).send({error:"block title is wrong"});
-  
-  // // If the code block is found, update its isMentor value
-  // if (!codeBlock?.mentor) {
-  //   codeBlock.mentor = uniqueKey;
-  //   isMentor = true;
-  // }
-  // else{
-  //   if(codeBlock?.mentor === uniqueKey){
-  //     isMentor = true;
-  //   }
-  // }
-
-  console.log(isMentor);
-
-  console.log(codeBlocks);
   try {
 
     if (!title) return res.status(400).send({error:"block title is empty"});
