@@ -8,16 +8,15 @@ import socket from "../api/socket.js";
 
 
 const title = JSONWork.title;
-console.log(title);
 const SEND_CODE_URL = "/api/codeBlock";
 const SET_UP_URL = `/api/SetComponentUp/${title}`;
 
 const JSONCode = () => {
   const [code, setCode] = useState(JSONWork.code);
   const [isMentor, setIsMentor] = useState(false);
-  const [message, setMessage] = useState("");
   const [isCodeCorrect, setIsCodeCorrect] = useState(false);
   const [showBackdrop, setShowBackdrop] = useState(false);
+  const [hasChanged, setHasChanged] = useState(false);
 
   //function to remove backdrop display
   const handleBackdropClick = (e) => {
@@ -36,17 +35,17 @@ const JSONCode = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     const res = await axios.post(SEND_CODE_URL, { code: code, title: title });
-    console.log(res);
     if (res.status === 200) {
-      setMessage("the solution sent successfully");
+      window.alert("the solution sent successfully");
     } else {
-      setMessage("something went wrong");
+      window.alert("something went wrong");
     }
   };
 
   // handles the change event inside the textarea (user solution)
   const handleChange = (e) => {
     e.preventDefault();
+    setHasChanged(true);
     setCode(e.target.value);
     socket.emit("code_change", e.target.value);
     let newCode = removeIndentation(e.target.value);
@@ -57,6 +56,26 @@ const JSONCode = () => {
       setIsCodeCorrect(false);
     }
   };
+
+  // if user has changed the code, make sure he saved the changes before exiting
+  useEffect(() => {
+    if(!hasChanged) return;
+
+    const handleBeforeUnload = (event) => {
+      const userRes = window.confirm("Have you saved your changes?");
+      if (!userRes) {
+        event.preventDefault();
+        return (event.returnValue = "");
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload, {capture: true});
+
+    //triggered when user exit component
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [hasChanged])
 
   useEffect(() => {
     //setting up component data from server
@@ -74,21 +93,6 @@ const JSONCode = () => {
       })
       .catch((err) => console.error(err));
     
-    // this function will be called when user wants to exit component
-    const handleBeforeUnload = (event) => {
-      const userRes = window.confirm("Have you saved your changes?");
-      if (!userRes) {
-        event.preventDefault();
-        event.returnValue = ""; // For older browsers
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    //triggered when user exit component
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
   }, []);
 
   useEffect(() => {
@@ -116,7 +120,6 @@ const JSONCode = () => {
         {code}
       </SyntaxHighlighter>
       <button onClick={handleClick}>save changes</button>
-      <p>{message}</p>
       {isCodeCorrect && showBackdrop ? (
         <div>
           <div className="backdrop" onClick={handleBackdropClick} />
