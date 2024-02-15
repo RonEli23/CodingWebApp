@@ -58,15 +58,12 @@ export const handleSetComponentUp = async (req, res) => {
       if(mentor && mentor === uniqueKey){
         isMentor = true; 
       }
-      if(!isMentor){
-        let resultUpdate = await newCode_model.updateOne(
-          { title: title },
-          { mentor: mentor }
-        );
-      }
+      
       res.status(200).json({ code: code, isMentor: isMentor });
     } else {
-      res.status(200).json({ code: null, isMentor: isMentor });
+      const newCode = new newCode_model({title: title, code:"", mentor: uniqueKey});
+      let resultSave = await newCode.save(obj);
+      resultSave ? res.status(200).json({ code: null, isMentor: isMentor }) : res.status(500).send({ error: 'something blew up' });;
     }
   } catch (err) {
     console.log(err);
