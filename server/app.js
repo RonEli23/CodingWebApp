@@ -14,7 +14,9 @@ const NODE = process.env.NODE_ENV;
 const URI_MONGO = process.env.MONGODB_URI;
 
 
-app.use(cors())
+app.use(cors({
+    origin: 'https://codingwebapp.onrender.com'
+}))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
