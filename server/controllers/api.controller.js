@@ -41,9 +41,8 @@ export const handleSubmitCode = async (req, res) => {
 };
 
 export const handleSetComponentUp = async (req, res) => {
-  const clientIpAddress = req.get('X-Forwarded-For') || req.ip;; // Retrieve client IP address
-  console.log(req.env["HTTP_TRUE_CLIENT_IP"]);
-  const clientIP = clientIpAddress.split(',')[0].trim(); // Extract the leftmost IP address
+  const clientKey = req.cookies['uniqueKey']; // Retrieve client IP address
+  console.log(clientKey);
   const { title } = req?.query;
   let isMentor = false;
   console.log(title);
@@ -55,11 +54,11 @@ export const handleSetComponentUp = async (req, res) => {
   
   // If the code block is found, update its isMentor value
   if (!codeBlock?.mentor) {
-    codeBlock.mentor = clientIP;
+    codeBlock.mentor = clientKey;
     isMentor = true;
   }
   else{
-    if(codeBlock?.mentor === clientIP){
+    if(codeBlock?.mentor === clientKey){
       isMentor = true;
     }
   }
