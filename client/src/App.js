@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
 
-    //triggered when user exit component
+    //triggered when user exit app
     return () => {
       socket.disconnect();
     };

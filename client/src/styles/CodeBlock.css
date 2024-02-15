@@ -12,14 +12,14 @@
     font-size: 2.6rem;
 }
 
-.textarea {
+textarea {
     padding: 10px;
-    min-width: 30rem;
+    min-width: 25rem;
     grid-column: 1/2; 
     grid-row-start: 2;
     grid-row-end: 3;
     text-align: left;
-  }
+}
 
 .code-block{
     text-align: left;

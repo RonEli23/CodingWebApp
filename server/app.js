@@ -7,7 +7,6 @@ import router from './routes/route.js';
 import mongoose from 'mongoose';
 
 
-
 const httpServer = createServer(app)
 const PORT = process.env.PORT || 8080;
 const MODE = process.env.MODE_ENV;
@@ -28,6 +27,9 @@ const io = new Server(httpServer, {
 // Socket.IO server
 io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
+    // Send the socket ID to the client
+    socket.emit('socketId', socket.id);
+
 
     socket.on('code_change', data => {
         socket.broadcast.emit("received_data", data)
