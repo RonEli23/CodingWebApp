@@ -6,6 +6,7 @@ import { Server } from "socket.io"
 import router from './routes/route.js';
 import mongoose from 'mongoose';
 import { } from 'dotenv/config';
+import cookieParser from 'cookie-parser';
 
 
 const httpServer = createServer(app)
