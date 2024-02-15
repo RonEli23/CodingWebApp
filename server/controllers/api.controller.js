@@ -1,14 +1,6 @@
 import mongoose from "mongoose";
 import { code_block_schema } from "../models/code_block.js";
 
-// // Keep track of users in each code block
-// const codeBlocks = [
-//   { title: "Basic Function and Variable Declaration", mentor: "" },
-//   { title: "Asynchronous Function", mentor: "" },
-//   { title: "Working with JSON Data", mentor: "" },
-//   { title: "Array Manipulation", mentor: "" },
-// ];
-
 const newCode_model = mongoose.model("newCode", code_block_schema);
 
 export const handleSubmitCode = async (req, res) => {
@@ -62,7 +54,7 @@ export const handleSetComponentUp = async (req, res) => {
       res.status(200).json({ code: code, isMentor: isMentor });
     } else {
       const newCode = new newCode_model({title: title, code:"", mentor: uniqueKey});
-      let resultSave = await newCode.save(obj);
+      let resultSave = await newCode.save({title: title, code:"", mentor: uniqueKey});
       resultSave ? res.status(200).json({ code: null, isMentor: isMentor }) : res.status(500).send({ error: 'something blew up' });;
     }
   } catch (err) {
