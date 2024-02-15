@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 console.log(NODE)
 const io = new Server(httpServer, {
     cors: {
-        origin: NODE === "production" ? false : ["http://localhost:3000", "http://127.0.0.1:3000"]
+        origin: NODE === "production" ? "https://codingwebapp.onrender.com" : ["http://localhost:3000", "http://127.0.0.1:3000"]
     }
 })
 
