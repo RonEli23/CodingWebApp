@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import LobbyPage from './components/LobbyPage';
 import ArrayManipulationCode from './components/ArrayManipulationCode';
 import AsyncCode from './components/AsyncCode';
@@ -8,12 +8,18 @@ import JSONCode from './components/JSONCode';
 import NoPage from './components/NoPage';
 import { useEffect } from 'react';
 import socket from "./api/socket.js";
+import Cookies from 'js-cookie';
+import { v4 as uuidv4 } from 'uuid'; // Import uuid package for generating unique keys
 
 
 function App() {
 
   useEffect(() => {
 
+    if(!Cookies.get("uniqueKey")){
+      Cookies.set("uniqueKey", JSON.stringify(uuidv4()));
+    }
+    
     //triggered when user exit app
     return () => {
       socket.disconnect();
