@@ -9,7 +9,7 @@ import mongoose from 'mongoose';
 
 const httpServer = createServer(app)
 const PORT = process.env.PORT || 8080;
-const MODE = process.env.MODE_ENV;
+const NODE = process.env.NODE_ENV;
 const URI_MONGO = process.env.MONGODB_URI || "mongodb+srv://Ron_Eli23:XVyP8DVRjvaE03WE@cluster0.dgujynr.mongodb.net/?retryWrites=true&w=majority";
 
 
@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 
 const io = new Server(httpServer, {
     cors: {
-        origin: MODE === "production" ? false : ["http://localhost:3000", "http://127.0.0.1:3000"]
+        origin: NODE === "production" ? false : ["http://localhost:3000", "http://127.0.0.1:3000"]
     }
 })
 
