@@ -43,6 +43,7 @@ export const handleSubmitCode = async (req, res) => {
 export const handleSetComponentUp = async (req, res) => {
   const { title ,uniqueKey} = req?.query;
   let isMentor = false;
+  console.log(uniqueKey);
   if (!title) return res.status(400).send({error:"block title is empty"});
 
   // Find the code block with the given title
@@ -60,9 +61,9 @@ export const handleSetComponentUp = async (req, res) => {
     }
   }
 
-  // console.log(isMentor);
+  console.log(isMentor);
 
-  // console.log(codeBlocks);
+  console.log(codeBlocks);
   try {
     //mongo
     const query = newCode_model.find({ title: title });
