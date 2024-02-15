@@ -92,6 +92,7 @@ const ArrayManipulationCode = () => {
         if (res.data.code) {
           setCode(res.data.code);
         }
+        console.log(res.data.isMentor)
         setIsMentor(res.data.isMentor);
       })
       .catch((err) => console.error(err));
