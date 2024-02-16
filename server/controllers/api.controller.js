@@ -7,17 +7,10 @@ export const handleSubmitCode = async (req, res) => {
   const { title, code } = req?.body;
   if (!title) return res.status(400).send();
   else {
-    let obj = {
-      title: title,
-      code: code,
-    };
-
     try {
       let resultFind = await newCode_model.findOne({ title });
       if (!resultFind) {
-        const newCode = new newCode_model(obj);
-        let resultSave = await newCode.save(obj);
-        resultSave ? res.status(200).send() : res.status(500).send({ error: 'something blew up' });
+        res.status(400).send({ error: 'something went wrong' });
       } else {
         let resultUpdate = await newCode_model.updateOne(
           { title: title },
@@ -42,11 +35,10 @@ export const handleSetComponentUp = async (req, res) => {
 
     //mongo
 
-    const query = newCode_model.find({ title: title });
-    const result = await query.exec();
-    if (result.length > 0) {
-      let code = result[0].code;
-      let mentor = result[0].mentor;
+    const result = newCode_model.findOne({ title: title });
+    if (result) {
+      let code = result.code;
+      let mentor = result.mentor;
       if(mentor && mentor === uniqueKey){
         isMentor = true; 
       }
@@ -55,6 +47,7 @@ export const handleSetComponentUp = async (req, res) => {
     } else {
       const newCode = new newCode_model({title: title, code:"", mentor: uniqueKey});
       let resultSave = await newCode.save({title: title, code:"", mentor: uniqueKey});
+      isMentor = true; 
       resultSave ? res.status(200).json({ code: null, isMentor: isMentor }) : res.status(500).send({ error: 'something blew up' });;
     }
   } catch (err) {
