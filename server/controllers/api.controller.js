@@ -35,7 +35,7 @@ export const handleSetComponentUp = async (req, res) => {
 
     //mongo
 
-    const result = newCode_model.findOne({ title: title });
+    const result = await newCode_model.findOne({ title: title });
     console.log(result);
     if (result) {
       let code = result.code;
