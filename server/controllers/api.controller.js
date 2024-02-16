@@ -36,18 +36,21 @@ export const handleSetComponentUp = async (req, res) => {
     //mongo
 
     const result = newCode_model.findOne({ title: title });
+    console.log(result);
     if (result) {
       let code = result.code;
       let mentor = result.mentor;
       if(mentor && mentor === uniqueKey){
         isMentor = true; 
       }
-      
+      console.log("hi");
       res.status(200).json({ code: code, isMentor: isMentor });
     } else {
+      console.log("hi2");
       const newCode = new newCode_model({title: title, code:"", mentor: uniqueKey});
       let resultSave = await newCode.save({title: title, code:"", mentor: uniqueKey});
       isMentor = true; 
+      console.log(resultSave);
       resultSave ? res.status(200).json({ code: null, isMentor: isMentor }) : res.status(500).send({ error: 'something blew up' });;
     }
   } catch (err) {
