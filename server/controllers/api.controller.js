@@ -31,7 +31,7 @@ export const handleSetComponentUp = async (req, res) => {
 
   try {
 
-    if (!title || !uniqueKey) return res.status(400).send({error:"block title is empty"});
+    if (!title || !uniqueKey) return res.status(400).send({error:"block title or uniqueKey is empty"});
 
     //mongo
 
