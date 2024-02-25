@@ -5,6 +5,11 @@ const BASE_URL = process.env.NODE_ENV === 'production'
 
 
 export default axios.create({
-    baseURL: BASE_URL
+  baseURL: BASE_URL,
+  timeout: 5000, // Timeout after 5 seconds
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
 });
 

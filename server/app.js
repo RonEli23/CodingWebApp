@@ -1,5 +1,4 @@
 import express from 'express';
-const app = express();
 import cors from 'cors';
 import { createServer } from "http";
 import { Server } from "socket.io"
@@ -8,10 +7,9 @@ import mongoose from 'mongoose';
 import { } from 'dotenv/config';
 import cookieParser from 'cookie-parser';
 
-
+const app = express();
 const httpServer = createServer(app)
 const PORT = process.env.PORT || 8080;
-const NODE = process.env.NODE_ENV;
 const URI_MONGO = process.env.MONGODB_URI;
 const CLIENT_ORIGIN_DEV = process.env.CLIENT_ORIGIN_DEV;
 const CLIENT_ORIGIN_PROD = process.env.CLIENT_ORIGIN_PROD;
@@ -21,9 +19,8 @@ app.use(cors({
     credentials: true
 }));
 
-
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(cookieParser());
 
 
@@ -39,8 +36,14 @@ const io = new Server(httpServer, {
 io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
 
+    socket.on('join room', (room) => {
+        socket.join(room);
+        console.log(`User joined room: ${room}`);
+    });
+
     socket.on('code_change', data => {
-        socket.broadcast.emit("received_data", data)
+        const { room, code } = data;
+        socket.to(room).emit('received_data', code);
     })
 
     // Handle disconnect event

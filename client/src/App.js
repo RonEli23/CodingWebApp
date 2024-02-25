@@ -22,6 +22,9 @@ function App() {
 
       Cookies.set("uniqueKey", JSON.stringify(newUniqueKey), {
         expires: expirationDate,
+        secure: true,
+        sameSite: 'None',
+        path: '/', // Set the path to root so it's sent with all requests
       }); // Setting cookie with expiration date
     }
   }, []);

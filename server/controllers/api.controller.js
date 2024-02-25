@@ -26,7 +26,9 @@ export const handleSubmitCode = async (req, res) => {
 };
 
 export const handleSetComponentUp = async (req, res) => {
-  const { title ,uniqueKey} = req?.query;
+  console.log(req.cookies)
+  const { title } = req?.params
+  const { uniqueKey} = req?.query;
   let isMentor = false;
 
   try {
