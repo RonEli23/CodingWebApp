@@ -14,6 +14,8 @@ const URI_MONGO = process.env.MONGODB_URI;
 const CLIENT_ORIGIN_DEV = process.env.CLIENT_ORIGIN_DEV;
 const CLIENT_ORIGIN_PROD = process.env.CLIENT_ORIGIN_PROD;
 
+console.log(process.env.NODE_ENV)
+
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' ? CLIENT_ORIGIN_PROD : CLIENT_ORIGIN_DEV,
     credentials: true
