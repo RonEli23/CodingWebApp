@@ -24,13 +24,16 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-const io = new Server(httpServer, {
-    cors: {
-      origin: process.env.NODE_ENV === 'production'
-        ? CLIENT_ORIGIN_PROD
-        : [CLIENT_ORIGIN_DEV, 'http://127.0.0.1:3000']
-    }
-});
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production'
+      ? CLIENT_ORIGIN_PROD
+      : [CLIENT_ORIGIN_DEV, 'http://127.0.0.1:3000'],
+    credentials: true,
+  };
+  
+  const io = new Server(httpServer, {
+    cors: corsOptions, // Use the corsOptions for Socket.IO
+  });
 
 // Socket.IO server
 io.on('connection', socket => {
