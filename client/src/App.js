@@ -18,6 +18,11 @@ function App() {
     if (!Cookies.get("uniqueKey")) {
       const newUniqueKey = uuidv4();
 
+      const domain = process.env.NODE_ENV === 'production'
+        ? process.env.REACT_APP_COOKIE_DOMAIN_PROD
+        : process.env.REACT_APP_COOKIE_DOMAIN_DEV;
+
+
       // Set expiration date
       let expirationDate = new Date();
       expirationDate.setDate(expirationDate.getDate() + 30); // This sets the expiration date 30 days from now
@@ -26,6 +31,7 @@ function App() {
         expires: expirationDate,
         secure: true,
         sameSite: 'None',
+        domain: domain,
         path: '/', // Set the path to root so it's sent with all requests
       }); // Setting cookie with expiration date
     }
@@ -44,7 +50,7 @@ function App() {
         console.error(error);
       }
     };
-    
+
     fetchData();
   }, []);
 
