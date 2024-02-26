@@ -35,8 +35,7 @@ function App() {
         path: '/', // Set the path to root so it's sent with all requests
       }); 
     }
-
-    fetchData();
+    
   }, []);
 
   return (
