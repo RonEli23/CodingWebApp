@@ -22,6 +22,10 @@ const CodeBlockTemplate = ({ title, solution, initialCode }) => {
         return text.replace(/^\s+|\s+$/gm, '');
     };
 
+    // const removeIndentation = (text) => {
+    //     return text.split('\n').map(line => line.trim()).join('\n');
+    // };
+
     const formattedSolution = removeIndentation(solution);
 
     const handleSubmit = async (e) => {

@@ -9,6 +9,8 @@ import NoPage from "./components/NoPage";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid"; // Import uuid package for generating unique keys
+import axios from 'axios';
+
 
 function App() {
   //create/get cookie at the first render of the app
@@ -27,6 +29,23 @@ function App() {
         path: '/', // Set the path to root so it's sent with all requests
       }); // Setting cookie with expiration date
     }
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/test`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+        console.log(response.data);
+        console.log(response.headers); // Check the response headers to see if the server sent back the Set-Cookie header
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
+    fetchData();
   }, []);
 
   return (

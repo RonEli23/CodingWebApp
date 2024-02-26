@@ -14,7 +14,6 @@ const URI_MONGO = process.env.MONGODB_URI;
 const CLIENT_ORIGIN_DEV = process.env.CLIENT_ORIGIN_DEV;
 const CLIENT_ORIGIN_PROD = process.env.CLIENT_ORIGIN_PROD;
 
-console.log(process.env.NODE_ENV)
 
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' ? CLIENT_ORIGIN_PROD : CLIENT_ORIGIN_DEV,
@@ -28,14 +27,19 @@ app.use(cookieParser());
 
 const corsOptions = {
     origin: process.env.NODE_ENV === 'production'
-      ? CLIENT_ORIGIN_PROD
-      : [CLIENT_ORIGIN_DEV, 'http://127.0.0.1:3000'],
+        ? CLIENT_ORIGIN_PROD
+        : [CLIENT_ORIGIN_DEV, 'http://127.0.0.1:3000'],
     credentials: true,
-  };
-  
-  const io = new Server(httpServer, {
+};
+
+app.get('/test', (req, res) => {
+    console.log(req.cookies)
+    res.send(req.cookies); // Just return the cookies for testing
+});
+
+const io = new Server(httpServer, {
     cors: corsOptions, // Use the corsOptions for Socket.IO
-  });
+});
 
 // Socket.IO server
 io.on('connection', socket => {
