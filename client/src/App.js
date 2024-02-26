@@ -33,23 +33,8 @@ function App() {
         sameSite: 'Lax',
         domain: domain,
         path: '/', // Set the path to root so it's sent with all requests
-      }); // Setting cookie with expiration date
+      }); 
     }
-
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/test`, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true,
-        });
-        console.log(response.data);
-        console.log(response.headers); // Check the response headers to see if the server sent back the Set-Cookie header
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
     fetchData();
   }, []);

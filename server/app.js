@@ -32,11 +32,6 @@ const corsOptions = {
     credentials: true,
 };
 
-app.get('/test', (req, res) => {
-    console.log(req.cookies)
-    res.send(req.cookies); // Just return the cookies for testing
-});
-
 const io = new Server(httpServer, {
     cors: corsOptions, // Use the corsOptions for Socket.IO
 });
