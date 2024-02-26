@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import Cookies from 'js-cookie';
@@ -56,6 +56,20 @@ const CodeBlockTemplate = ({ title, solution, initialCode }) => {
         setShowBackdrop(false);
     };
 
+    useLayoutEffect(() => {
+        const url = `${SET_UP_URL}/${title}`;
+        const params = { uniqueKey: Cookies.get('uniqueKey') };
+
+        sendRequest(url, 'get', params)
+            .then((res) => {
+                if (res.code) {
+                    setCode(res.code);
+                }
+                setIsMentor(res.isMentor);
+            })
+            .catch((err) => console.error(err));
+    }, []);
+
     useEffect(() => {
         if (!hasChanged) return;
 
@@ -73,20 +87,6 @@ const CodeBlockTemplate = ({ title, solution, initialCode }) => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, [hasChanged]);
-
-    useEffect(() => {
-        const url = `${SET_UP_URL}/${title}`;
-        const params = { uniqueKey: Cookies.get('uniqueKey') };
-
-        sendRequest(url, 'get', params)
-            .then((res) => {
-                if (res.code) {
-                    setCode(res.code);
-                }
-                setIsMentor(res.isMentor);
-            })
-            .catch((err) => console.error(err));
-    }, []);
 
 
     useEffect(() => {
@@ -107,7 +107,12 @@ const CodeBlockTemplate = ({ title, solution, initialCode }) => {
 
     // Render loading indicator
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="loading-container">
+                <div className="loading-spinner"></div>
+                <div className="loading-text">Loading...</div>
+            </div>
+        );
     }
 
     // Render error message
@@ -128,7 +133,7 @@ const CodeBlockTemplate = ({ title, solution, initialCode }) => {
             <SyntaxHighlighter language="javascript" style={atomOneDark} className="code-block">
                 {code}
             </SyntaxHighlighter>
-            <button onClick={handleSubmit} disabled={isMentor}>Save Changes</button>
+            {!isMentor ? <button onClick={handleSubmit} disabled={isMentor}>Save Changes</button> : null}
             {isCodeCorrect && showBackdrop ? (
                 <div>
                     <div className="backdrop" onClick={handleBackdropClick} />
